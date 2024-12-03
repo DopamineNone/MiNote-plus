@@ -43,9 +43,9 @@ dependencies {
     implementation libs.activity
     implementation libs.constraintlayout
 //    implementation fileTree(dir: 'C:\\Users\\DopamineNone\\Projects\\Notes\\httpcomponents-client-4.5.14-bin\\lib', include: ['*.aar', '*.jar'], exclude: [])
-    implementation(fileTree("C:\\Users\\DopamineNone\\Projects\\Notes\\httpcomponents-client-4.5.14-bin\\lib\\httpclient-osgi-4.5.14.jar"))
-    implementation(fileTree("C:\\Users\\DopamineNone\\Projects\\Notes\\httpcomponents-client-4.5.14-bin\\lib\\httpclient-win-4.5.14.jar"))
-    implementation(fileTree("C:\\Users\\DopamineNone\\Projects\\Notes\\httpcomponents-client-4.5.14-bin\\lib\\httpcore-4.4.16.jar"))
+    implementation(fileTree("..\\httpcomponents-client-4.5.14-bin\\lib\\httpclient-osgi-4.5.14.jar"))
+    implementation(fileTree("..\\httpcomponents-client-4.5.14-bin\\lib\\httpclient-win-4.5.14.jar"))
+    implementation(fileTree("..\\httpcomponents-client-4.5.14-bin\\lib\\httpcore-4.4.16.jar"))
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core

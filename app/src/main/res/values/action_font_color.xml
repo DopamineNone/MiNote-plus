@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 定义文本背景颜色数组 -->
+    <string-array name="action_font_color">
+        <item>默认</item>
+        <item>黑色</item>
+        <item>红色</item>
+        <item>黄色</item>
+        <item>蓝色</item>
+        <item>绿色</item>
+        <item>白色</item>
+    </string-array>
+</resources>

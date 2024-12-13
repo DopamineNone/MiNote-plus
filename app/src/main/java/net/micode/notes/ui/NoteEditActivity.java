@@ -27,6 +27,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -51,6 +52,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Button;
+import android.widget.HorizontalScrollView;
 
 import net.micode.notes.R;
 import net.micode.notes.data.Notes;
@@ -68,8 +71,11 @@ import net.micode.notes.widget.NoteWidgetProvider_4x;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import jp.wasabeef.richeditor.RichEditor;
 
 
 public class NoteEditActivity extends Activity implements OnClickListener,
@@ -128,7 +134,8 @@ public class NoteEditActivity extends Activity implements OnClickListener,
 
     private View mFontSizeSelector;
 
-    private EditText mNoteEditor;
+//    private EditText mNoteEditor;
+    private RichEditor mNoteEditor;
 
     private View mNoteEditorPanel;
 
@@ -149,6 +156,11 @@ public class NoteEditActivity extends Activity implements OnClickListener,
     private String mUserQuery;
     private Pattern mPattern;
 
+    private final int PHOTO_REQUEST = 1;//请求码
+    private String mText;
+    private int currentFontSizeIndex;
+    private int[] fontSizes = {R.dimen.text_font_size_small, R.dimen.text_font_size_normal, R.dimen.text_font_size_medium, R.dimen.text_font_size_large, R.dimen.text_font_size_super};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -159,6 +171,9 @@ public class NoteEditActivity extends Activity implements OnClickListener,
             return;
         }
         initResources();
+
+        // 初始化展开/收起菜单逻辑
+        initMenuToggleLogic();
     }
 
     /**
@@ -265,36 +280,142 @@ public class NoteEditActivity extends Activity implements OnClickListener,
     @Override
     protected void onResume() {
         super.onResume();
-        initNoteScreen();
+//        initNoteScreen();
+        initRichEditor();
+    }
+    private void updateFontSize() {
+        int fontSize = getResources().getDimensionPixelSize(fontSizes[currentFontSizeIndex]);
+        mNoteEditor.setEditorFontSize(fontSize);
+    }
+//
+    public int countTextCharacters(String htmlContent) {
+        if (htmlContent == null || htmlContent.isEmpty()) {
+        return 0;
     }
 
-    private void initNoteScreen() {
-        mNoteEditor.setTextAppearance(this, TextAppearanceResources
-                .getTexAppearanceResource(mFontSizeId));
-        if (mWorkingNote.getCheckListMode() == TextNote.MODE_CHECK_LIST) {
-            switchToListMode(mWorkingNote.getContent());
-        } else {
-            mNoteEditor.setText(getHighlightQueryResult(mWorkingNote.getContent(), mUserQuery));
-            mNoteEditor.setSelection(mNoteEditor.getText().length());
-        }
-        for (Integer id : sBgSelectorSelectionMap.keySet()) {
-            findViewById(sBgSelectorSelectionMap.get(id)).setVisibility(View.GONE);
-        }
-        mHeadViewPanel.setBackgroundResource(mWorkingNote.getTitleBgResId());
-        mNoteEditorPanel.setBackgroundResource(mWorkingNote.getBgColorResId());
+    // Remove HTML tags and decode HTML entities
+    String textOnly = htmlContent.replaceAll("<[^>]*>", "").replaceAll("&[a-zA-Z0-9#]+;", " ");
 
-        mNoteHeaderHolder.tvModified.setText(DateUtils.formatDateTime(this,
-                mWorkingNote.getModifiedDate(), DateUtils.FORMAT_SHOW_DATE
-                        | DateUtils.FORMAT_NUMERIC_DATE | DateUtils.FORMAT_SHOW_TIME
-                        | DateUtils.FORMAT_SHOW_YEAR));
+    // Count characters
+    return textOnly.length();
+}
+    private boolean default_cloor=false;
+    public void initRichEditor()
+    {
+        currentFontSizeIndex = 0;
+        updateFontSize();
+        mNoteEditor.setEditorHeight(500);//设置编辑器界面高度
+        mNoteEditor.setEditorFontColor(Color.BLACK);//字体颜色
+        mNoteEditor.setPlaceholder("点击输入内容");//设置默认显示语句
+        mNoteEditor.setInputEnabled(true);//设置编辑器是否可用
+        mNoteEditor.setEditorWidth(LinearLayout.LayoutParams.MATCH_PARENT);//设置编辑器宽度
 
-        /**
-         * TODO: Add the menu for setting alert. Currently disable it because the DateTimePicker
-         * is not ready
-         */
+        if (mWorkingNote != null) {
+            // 加载背景
+            int bgResId = mWorkingNote.getBgColorResId();
+            mNoteEditor.setBackgroundResource(bgResId);
+            mNoteEditorPanel.setBackgroundResource(bgResId);
+            mHeadViewPanel.setBackgroundResource(mWorkingNote.getTitleBgResId());
+            // 加载并设置笔记内容
+            Log.d(TAG,"加载时webView的内容:"+mNoteEditor.getHtml());
+            Log.d(TAG, "加载时的内容: " + mWorkingNote.getContent());
+            String noteContent = mWorkingNote.getContent();
+            mNoteEditor.setHtml(noteContent);
+            int mNoteLength;
+            if(noteContent != null)
+            {
+                mNoteLength = countTextCharacters(noteContent);
+            } else
+            {
+                mNoteLength = 0;
+            }
+
+            mNoteHeaderHolder.tvModified.setText(DateUtils.formatDateTime(NoteEditActivity.this,
+                    mWorkingNote.getModifiedDate(), DateUtils.FORMAT_SHOW_DATE
+                            | DateUtils.FORMAT_NUMERIC_DATE | DateUtils.FORMAT_SHOW_TIME
+                            | DateUtils.FORMAT_SHOW_YEAR) + "\n字符数：" + mNoteLength);
+        }
+        else {
+            mNoteEditor.setBackgroundResource(R.drawable.edit_white); // 默认背景
+        }
         showAlertHeader();
+
+
+
+        //添加图片
+        findViewById(R.id.add_img_btn).setOnClickListener(v -> {
+            Intent loadImage = new Intent(Intent.ACTION_GET_CONTENT);
+            loadImage.addCategory(Intent.CATEGORY_OPENABLE);
+            loadImage.setType("image/*");
+            startActivityForResult(loadImage, PHOTO_REQUEST);
+        });
+
+        // 设置加粗功能
+        findViewById(R.id.action_bold).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mNoteEditor.setBold();
+            }
+        });
+
+        // 设置斜体功能
+        findViewById(R.id.action_italic).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mNoteEditor.setItalic();
+            }
+        });
+
+        // 设置下划线功能
+        findViewById(R.id.action_underline).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mNoteEditor.setUnderline();
+            }
+        });
+        // 字体放大功能
+        findViewById(R.id.action_font_increase).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentFontSizeIndex < fontSizes.length - 1) {
+                    currentFontSizeIndex++;
+                    updateFontSize();
+                }
+            }
+        });
+
+        // 字体缩小功能
+        findViewById(R.id.action_font_decrease).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentFontSizeIndex > 0) {
+                    currentFontSizeIndex--;
+                    updateFontSize();
+                }
+            }
+        });
+
     }
 
+    private void initMenuToggleLogic() {
+        // 获取视图
+        Button btnText = findViewById(R.id.btn_text);
+        LinearLayout menuTextOptions = findViewById(R.id.menu_text_options);
+        boolean[] isMenuExpanded = {false}; // 菜单状态
+
+        // 设置文字按钮的点击事件
+        btnText.setOnClickListener(v -> {
+            if (isMenuExpanded[0]) {
+                // 收起菜单
+                menuTextOptions.setVisibility(View.GONE);
+                isMenuExpanded[0] = false;
+            } else {
+                // 展开菜单
+                menuTextOptions.setVisibility(View.VISIBLE);
+                isMenuExpanded[0] = true;
+            }
+        });
+    }
     private void showAlertHeader() {
         if (mWorkingNote.hasClockAlert()) {
             long time = System.currentTimeMillis();
@@ -371,7 +492,20 @@ public class NoteEditActivity extends Activity implements OnClickListener,
         mNoteHeaderHolder.tvAlertDate = (TextView) findViewById(R.id.tv_alert_date);
         mNoteHeaderHolder.ibSetBgColor = (ImageView) findViewById(R.id.btn_set_bg_color);
         mNoteHeaderHolder.ibSetBgColor.setOnClickListener(this);
-        mNoteEditor = (EditText) findViewById(R.id.note_edit_view);
+//        mNoteEditor = (EditText) findViewById(R.id.note_edit_view);
+        // 设置富文本编辑器及监听器
+        mNoteEditor = (RichEditor) findViewById(R.id.note_edit_view);
+        mNoteEditor.setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
+            @Override
+            public void onTextChange(String text) {
+                mText = text;
+                int mNoteLength = countTextCharacters(mText);
+                mNoteHeaderHolder.tvModified.setText(DateUtils.formatDateTime(NoteEditActivity.this,
+                        mWorkingNote.getModifiedDate(), DateUtils.FORMAT_SHOW_DATE
+                                | DateUtils.FORMAT_NUMERIC_DATE | DateUtils.FORMAT_SHOW_TIME
+                                | DateUtils.FORMAT_SHOW_YEAR)+"\n字符数："+mNoteLength);
+            }
+        });
         mNoteEditorPanel = findViewById(R.id.sv_note_edit);
         mNoteBgColorSelector = findViewById(R.id.note_bg_color_selector);
         for (int id : sBgSelectorBtnsMap.keySet()) {
@@ -445,11 +579,11 @@ public class NoteEditActivity extends Activity implements OnClickListener,
                 getWorkingText();
                 switchToListMode(mWorkingNote.getContent());
             } else {
-                mNoteEditor.setTextAppearance(this,
-                        TextAppearanceResources.getTexAppearanceResource(mFontSizeId));
+                mNoteEditor.setEditorFontSize(mFontSizeId);
             }
             mFontSizeSelector.setVisibility(View.GONE);
         }
+        mNoteEditor.setBackgroundResource(mWorkingNote.getBgColorId());
     }
 
     @Override
@@ -770,13 +904,13 @@ public class NoteEditActivity extends Activity implements OnClickListener,
 
     public void onCheckListModeChanged(int oldMode, int newMode) {
         if (newMode == TextNote.MODE_CHECK_LIST) {
-            switchToListMode(mNoteEditor.getText().toString());
+            switchToListMode(mNoteEditor.getHtml());
         } else {
             if (!getWorkingText()) {
                 mWorkingNote.setWorkingText(mWorkingNote.getContent().replace(TAG_UNCHECKED + " ",
                         ""));
             }
-            mNoteEditor.setText(getHighlightQueryResult(mWorkingNote.getContent(), mUserQuery));
+            mNoteEditor.setHtml(getHighlightQueryResult(mWorkingNote.getContent(), mUserQuery).toString());
             mEditTextList.setVisibility(View.GONE);
             mNoteEditor.setVisibility(View.VISIBLE);
         }
@@ -800,7 +934,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
             }
             mWorkingNote.setWorkingText(sb.toString());
         } else {
-            mWorkingNote.setWorkingText(mNoteEditor.getText().toString());
+            mWorkingNote.setWorkingText(mNoteEditor.getHtml());
         }
         return hasChecked;
     }

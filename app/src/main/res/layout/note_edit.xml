@@ -87,7 +87,8 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent">
 
-                    <net.micode.notes.ui.NoteEditText
+<!--                    <net.micode.notes.ui.NoteEditText-->
+                    <jp.wasabeef.richeditor.RichEditor
                         android:id="@+id/note_edit_view"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -396,5 +397,101 @@
                 android:layout_marginBottom="-7dip"
                 android:src="@drawable/selected" />
         </FrameLayout>
+    </LinearLayout>
+
+    <!-- 底部菜单 -->
+    <LinearLayout
+        android:id="@+id/bottom_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <!-- 第一层按钮：图片和文字 -->
+        <LinearLayout
+            android:id="@+id/menu_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <!-- 图片按钮 -->
+            <Button
+                android:id="@+id/add_img_btn"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:text="添加图片"
+                android:textColor="@android:color/black"
+                android:textSize="20sp" />
+
+            <!-- 文字按钮 -->
+            <Button
+                android:id="@+id/btn_text"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:text="文字美化"
+                android:textColor="@android:color/black"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <!-- 扩展菜单 -->
+        <LinearLayout
+            android:id="@+id/menu_text_options"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:gravity="center"
+            android:paddingTop="8dp">
+
+            <!-- 加粗按钮 -->
+            <Button
+                android:id="@+id/action_bold"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:background="@drawable/action_bold"
+                android:contentDescription="加粗" />
+
+            <!-- 斜体按钮 -->
+            <Button
+                android:id="@+id/action_italic"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:background="@drawable/action_italic"
+                android:contentDescription="斜体" />
+
+            <!-- 下划线按钮 -->
+            <Button
+                android:id="@+id/action_underline"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:background="@drawable/action_underline"
+                android:contentDescription="下划线" />
+
+
+            <!-- 字体放大按钮 -->
+            <Button
+                android:id="@+id/action_font_increase"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:background="@drawable/action_font_increase"
+                android:contentDescription="字体放大" />
+
+            <!-- 字体缩小按钮 -->
+            <Button
+                android:id="@+id/action_font_decrease"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:background="@drawable/action_font_decrease"
+                android:contentDescription="字体缩小" />
+        </LinearLayout>
     </LinearLayout>
 </FrameLayout>

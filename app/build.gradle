@@ -46,6 +46,7 @@ dependencies {
     implementation(fileTree("..\\httpcomponents-client-4.5.14-bin\\lib\\httpclient-osgi-4.5.14.jar"))
     implementation(fileTree("..\\httpcomponents-client-4.5.14-bin\\lib\\httpclient-win-4.5.14.jar"))
     implementation(fileTree("..\\httpcomponents-client-4.5.14-bin\\lib\\httpcore-4.4.16.jar"))
+    implementation 'jp.wasabeef:richeditor-android:2.0.0'
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core

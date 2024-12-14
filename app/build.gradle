@@ -9,6 +9,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.notes"
+        minSdkVersion 19
         minSdk 24
         targetSdk 34
         versionCode 1
@@ -47,6 +48,7 @@ dependencies {
     implementation(fileTree("..\\httpcomponents-client-4.5.14-bin\\lib\\httpclient-win-4.5.14.jar"))
     implementation(fileTree("..\\httpcomponents-client-4.5.14-bin\\lib\\httpcore-4.4.16.jar"))
     implementation 'jp.wasabeef:richeditor-android:2.0.0'
+    implementation 'com.google.code.gson:gson:2.10.1'
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core

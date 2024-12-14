@@ -564,7 +564,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
         if (id == R.id.btn_set_bg_color) {
             mNoteBgColorSelector.setVisibility(View.VISIBLE);
             findViewById(sBgSelectorSelectionMap.get(mWorkingNote.getBgColorId())).setVisibility(
-                    -                    View.VISIBLE);
+                                        View.VISIBLE);
         } else if (sBgSelectorBtnsMap.containsKey(id)) {
             findViewById(sBgSelectorSelectionMap.get(mWorkingNote.getBgColorId())).setVisibility(
                     View.GONE);
@@ -583,7 +583,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
             }
             mFontSizeSelector.setVisibility(View.GONE);
         }
-        mNoteEditor.setBackgroundResource(mWorkingNote.getBgColorId());
+        mNoteEditor.setBackgroundResource(mWorkingNote.getBgColorResId());
     }
 
     @Override
@@ -681,6 +681,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
             case R.id.menu_delete_remind:
                 mWorkingNote.setAlertDate(0, false);
                 break;
+//            case R.id.:
             default:
                 break;
         }

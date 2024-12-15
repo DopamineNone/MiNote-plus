@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.appwidget.AppWidgetManager;
 import android.content.ContentUris;
@@ -27,6 +28,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -47,13 +50,11 @@ import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Button;
-import android.widget.HorizontalScrollView;
 
 import net.micode.notes.R;
 import net.micode.notes.data.Notes;
@@ -63,6 +64,7 @@ import net.micode.notes.model.WorkingNote.NoteSettingChangedListener;
 import net.micode.notes.tool.DataUtils;
 import net.micode.notes.tool.ResourceParser;
 import net.micode.notes.tool.ResourceParser.TextAppearanceResources;
+import net.micode.notes.tool.TextPrettifierTask;
 import net.micode.notes.ui.DateTimePickerDialog.OnDateTimeSetListener;
 import net.micode.notes.ui.NoteEditText.OnTextViewChangeListener;
 import net.micode.notes.widget.NoteWidgetProvider_2x;
@@ -71,7 +73,6 @@ import net.micode.notes.widget.NoteWidgetProvider_4x;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -79,7 +80,7 @@ import jp.wasabeef.richeditor.RichEditor;
 
 
 public class NoteEditActivity extends Activity implements OnClickListener,
-        NoteSettingChangedListener, OnTextViewChangeListener {
+        NoteSettingChangedListener, OnTextViewChangeListener, TextPrettifierTask.OnAsyncTaskResultListener {
     private class HeadViewHolder {
         public TextView tvModified;
 
@@ -681,11 +682,19 @@ public class NoteEditActivity extends Activity implements OnClickListener,
             case R.id.menu_delete_remind:
                 mWorkingNote.setAlertDate(0, false);
                 break;
-//            case R.id.:
+            case R.id.menu_prettify_note:
+                doPrettifyNote();
+                break;
             default:
                 break;
         }
         return true;
+    }
+
+    @Override
+    public void onResultReceived(String result) {
+        this.mNoteEditor.setHtml(result);
+//        Log.d(TAG, "onResultReceived: " + result);
     }
 
     private void setReminder() {
@@ -696,6 +705,34 @@ public class NoteEditActivity extends Activity implements OnClickListener,
             }
         });
         d.show();
+    }
+
+    private void doPrettifyNote() {
+        // Check if the note is empty
+        getWorkingText();
+        String content = mWorkingNote.getContent();
+        if (content == null || content.trim().length() == 0) {
+            showToast(R.string.error_note_empty_for_prettify);
+            return;
+        }
+
+        // Pop a alert dialog to confirm the action
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.alert_title_prettify));
+        builder.setMessage(getString(R.string.alert_message_prettify));
+        Context context = this;
+        TextPrettifierTask.OnAsyncTaskResultListener listener = this;
+
+        builder.setPositiveButton(R.string.alert_confirm, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                TextPrettifierTask task = new TextPrettifierTask(context, getAPIKey(), getEndpoint(), getSystemPrompt(), content, listener);
+                task.execute();
+            }
+        });
+
+        builder.setNegativeButton(R.string.alert_cancel, null);
+        builder.show();
     }
 
     /**
@@ -938,6 +975,40 @@ public class NoteEditActivity extends Activity implements OnClickListener,
             mWorkingNote.setWorkingText(mNoteEditor.getHtml());
         }
         return hasChecked;
+    }
+
+    private String getAPIKey() {
+        // TODO: get API key from meta-data
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_META_DATA);
+            Bundle bundle = info.applicationInfo.metaData;
+            return bundle.getString("API_KEY");
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private String getEndpoint() {
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_META_DATA);
+            Bundle bundle = info.applicationInfo.metaData;
+            return bundle.getString("ENDPOINT_URL");
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private String getSystemPrompt() {
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_META_DATA);
+            Bundle bundle = info.applicationInfo.metaData;
+            return bundle.getString("SYSTEM_ROLE_PROMPT");
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private boolean saveNote() {

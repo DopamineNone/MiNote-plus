@@ -46,6 +46,7 @@
     <string name="menu_sync_cancel">Cancel syncing</string>
     <string name="menu_setting">Settings</string>
     <string name="menu_search">Search</string>
+    <string name="menu_prettify_note">Prettify Note</string>
     <string name="menu_delete">Delete</string>
     <string name="menu_move">Move to folder</string>
     <string name="menu_select_title">%d selected</string>
@@ -69,11 +70,18 @@
     <string name="menu_remove_remind">Delete reminder</string>
     <string name="menu_title_select_folder">Select folder</string>
     <string name="menu_move_parent_folder">Parent folder</string>
+    <string name="insert_image">Insert image</string>
+    <string name="edit_font">Edit font</string>
     <string name="info_note_enter_desktop">Note added to home</string>
     <string name="alert_message_delete_folder">Confirm to delete folder and its notes?</string>
     <string name="alert_title_delete">Delete selected notes</string>
     <string name="alert_message_delete_notes">Confirm to delete the selected %d notes?</string>
     <string name="alert_message_delete_note">Confirm to delete this note?</string>
+    <string name="alert_loading">Loading...</string>
+    <string name="alert_title_prettify">Prettify note</string>
+    <string name="alert_message_prettify">Are you sure to prettify the note? This will change the note content and may cause data loss.</string>
+    <string name="alert_confirm">Yes</string>
+    <string name="alert_cancel">Cancel</string>
     <string name="format_move_notes_to_folder">Have moved selected %1$d notes to %2$s folder</string>
     <!-- Error information -->
     <string name="error_sdcard_unmounted">SD card busy, not available now</string>
@@ -81,6 +89,8 @@
     <string name="error_note_not_exist">The note is not exist</string>
     <string name="error_note_empty_for_clock">Sorry, can not set clock on empty note</string>
     <string name="error_note_empty_for_send_to_desktop">Sorry, can not send and empty note to home</string>
+    <string name="error_note_empty_for_prettify">Sorry, can not prettify an empty note</string>
+    <string name="error_note_prettify_fail">Prettify failed due to unknown reason</string>
     <string name="success_sdcard_export">Export successful</string>
     <string name="failed_sdcard_export">Export fail</string>
     <string name="format_exported_file_location">Export text file (%1$s) to SD (%2$s) directory</string>

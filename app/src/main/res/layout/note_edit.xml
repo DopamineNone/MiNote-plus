@@ -422,7 +422,7 @@
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:text="添加图片"
+                android:text="@string/insert_image"
                 android:textColor="@android:color/black"
                 android:textSize="20sp" />
 
@@ -432,7 +432,7 @@
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:text="文字美化"
+                android:text="@string/edit_font"
                 android:textColor="@android:color/black"
                 android:textSize="20sp" />
         </LinearLayout>

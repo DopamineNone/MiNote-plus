@@ -42,6 +42,7 @@
     <string name="menu_sync_cancel">取消同步</string>
     <string name="menu_setting">设置</string>
     <string name="menu_search">搜索</string>
+    <string name="menu_prettify_note">文本润色</string>
     <string name="menu_delete">删除</string>
     <string name="menu_move">移动到文件夹</string>
     <string name="menu_select_title">选中了 %d 项</string>
@@ -65,11 +66,18 @@
     <string name="menu_remove_remind">删除提醒</string>
     <string name="menu_title_select_folder">选择文件夹</string>
     <string name="menu_move_parent_folder">上一级文件夹</string>
+    <string name="insert_image">添加图片</string>
+    <string name="edit_font">编辑字体</string>
     <string name="info_note_enter_desktop">已添加到桌面</string>
     <string name="alert_title_delete">删除</string>
     <string name="alert_message_delete_notes">确认要删除所选的 %d 条便签吗?</string>
     <string name="alert_message_delete_note">确认要删除该条便签吗?</string>
     <string name="alert_message_delete_folder">确认删除文件夹及所包含的便签吗？</string>
+    <string name="alert_loading">加载中...</string>
+    <string name="alert_title_prettify">文本润色</string>
+    <string name="alert_message_prettify">确定进行文本润色吗？这将会修改便签中的文字。</string>
+    <string name="alert_confirm">确定</string>
+    <string name="alert_cancel">取消</string>
     <string name="format_move_notes_to_folder">已将所选 %1$d 条便签移到 %2$s 文件夹</string>
     <!-- export text -->
     <string name="error_sdcard_unmounted">SD卡被占用，不能操作</string>
@@ -77,6 +85,8 @@
     <string name="error_note_not_exist">要查看的便签不存在</string>
     <string name="error_note_empty_for_clock">不能为空便签设置闹钟提醒</string>
     <string name="error_note_empty_for_send_to_desktop">不能将空便签发送到桌面</string>
+    <string name="error_note_empty_for_prettify">不能为空便签进行文本润色</string>
+    <string name="error_note_prettify_fail">文本润色失败</string>
     <string name="success_sdcard_export">导出成功</string>
     <string name="failed_sdcard_export">导出失败</string>
     <string name="format_exported_file_location">已将文本文件(%1$s)输出至SD卡(%2$s)目录</string>

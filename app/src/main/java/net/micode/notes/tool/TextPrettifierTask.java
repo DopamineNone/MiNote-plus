@@ -39,7 +39,7 @@ public class TextPrettifierTask extends AsyncTask<Void, Void, Void> {
 
     private static final String USER_ROLE = "user";
 
-    private static String SYSTEM_MESSAGE;
+    private static String DASHSCOPE_PROMPT;
 
     private String errorMessage;
 
@@ -74,11 +74,11 @@ public class TextPrettifierTask extends AsyncTask<Void, Void, Void> {
         }
     }
 
-    public TextPrettifierTask(Context context, String apiKey, String endpoint, String systemMessage, String inputText, OnAsyncTaskResultListener listener) {
+    public TextPrettifierTask(Context context, String apiKey, String endpoint, String promptMessage, String inputText, OnAsyncTaskResultListener listener) {
         this.context = context;
         this.API_KEY = apiKey;
         this.ENDPOINT = endpoint;
-        this.SYSTEM_MESSAGE = systemMessage;
+        this.DASHSCOPE_PROMPT = promptMessage;
         this.inputText = inputText;
         this.errorMessage = context.getResources().getString(R.string.error_note_prettify_fail);
         this.listener = listener;
@@ -99,7 +99,7 @@ public class TextPrettifierTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... voids) {
         // Check if API_KEY and ENDPOINT are not null
-        if (API_KEY == null || ENDPOINT == null || SYSTEM_MESSAGE == null) {
+        if (API_KEY == null || ENDPOINT == null || DASHSCOPE_PROMPT == null) {
             this.result_flag = false;
             return null;
         }
@@ -126,12 +126,12 @@ public class TextPrettifierTask extends AsyncTask<Void, Void, Void> {
 
     private static String newRequestJson(String text) {
         return new Gson().toJson(
-                new RequestBody(new Message[] { new Message(SYSTEM_ROLE, SYSTEM_MESSAGE), new Message(USER_ROLE, text) })
+                new RequestBody(new Message[] { new Message(SYSTEM_ROLE, DASHSCOPE_PROMPT), new Message(USER_ROLE, text) })
         );
     }
 
     private String makePrompt(String text) {
-        return SYSTEM_MESSAGE + "\n---\n" + text;
+        return DASHSCOPE_PROMPT + "\n---\n" + text;
     }
 
     public void doPrettifyText() {

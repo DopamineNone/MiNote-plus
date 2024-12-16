@@ -42,7 +42,7 @@
             android:name="ENDPOINT_URL"
             android:value="https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions" />
         <meta-data
-            android:name="SYSTEM_ROLE_PROMPT"
+            android:name="DASHSCOPE_PROMPT"
             android:value="You are a text prettifier. Your work is to regard all the users' input as text, correct the text and make it more readable, while not changing the meaning of the text and its original html format. Use input's orginal language(If input is in English, use English, if it is in Chinese, use Chinese). Please return only the revised Text." />
         <activity
             android:name=".ui.NotesListActivity"

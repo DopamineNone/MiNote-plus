@@ -29,6 +29,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Spannable;
@@ -299,7 +300,20 @@ public class NoteEditActivity extends Activity implements OnClickListener,
     // Count characters
     return textOnly.length();
 }
-    private boolean default_cloor=false;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("NoteEditActivity", "Image selected: Uri=" + data.getData());
+        Uri selectedImageUri = data.getData();
+
+        mNoteEditor.insertImage(selectedImageUri.toString(), "local_image", 320);
+
+    }
+
+    // 从 Uri 获取文件路径
+
     public void initRichEditor()
     {
         currentFontSizeIndex = 0;
@@ -339,8 +353,6 @@ public class NoteEditActivity extends Activity implements OnClickListener,
             mNoteEditor.setBackgroundResource(R.drawable.edit_white); // 默认背景
         }
         showAlertHeader();
-
-
 
         //添加图片
         findViewById(R.id.add_img_btn).setOnClickListener(v -> {

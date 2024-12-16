@@ -312,7 +312,6 @@ public class NoteEditActivity extends Activity implements OnClickListener,
 
     }
 
-    // 从 Uri 获取文件路径
 
     public void initRichEditor()
     {

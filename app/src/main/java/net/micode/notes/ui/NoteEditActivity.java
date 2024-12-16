@@ -727,12 +727,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
 
     @Override
     public void onResultReceived(String result) {
-        Intent intent = new Intent(this, NotePreviewActivity.class);
-        intent.putExtra("note_text", result);
-        intent.putExtra("bg_color_res_id", mWorkingNote.getBgColorResId());
-        intent.putExtra("font_size", getResources().getDimensionPixelSize(fontSizes[currentFontSizeIndex]));
-        startActivityForResult(intent, PREVIEW_REQUEST);
-//        mNoteEditor.setHtml(result);
+        callPreview(result);
     }
 
     private void setReminder() {
@@ -794,7 +789,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
                 // Encrypt
                 try {
                     String encrypted = CryptUtils.encrypt(content, key);
-                    mNoteEditor.setHtml(encrypted);
+                    callPreview(encrypted);
                 } catch (Exception e) {
                     Log.e(TAG, "Encrypt error", e);
                     showToast(R.string.error_crypt_failed);
@@ -815,8 +810,8 @@ public class NoteEditActivity extends Activity implements OnClickListener,
                 }
                 // Encrypt
                 try {
-                    String encrypted = CryptUtils.decrypt(content, key);
-                    mNoteEditor.setHtml(encrypted);
+                    String decrypted = CryptUtils.decrypt(content, key);
+                    callPreview(decrypted);
                 } catch (Exception e) {
                     Log.e(TAG, "Encrypt error", e);
                     showToast(R.string.error_crypt_failed);
@@ -870,6 +865,14 @@ public class NoteEditActivity extends Activity implements OnClickListener,
             }
         }
         mWorkingNote.markDeleted(true);
+    }
+
+    private void callPreview(String content) {
+        Intent intent = new Intent(this, NotePreviewActivity.class);
+        intent.putExtra("note_text", content);
+        intent.putExtra("bg_color_res_id", mWorkingNote.getBgColorResId());
+        intent.putExtra("font_size", getResources().getDimensionPixelSize(fontSizes[currentFontSizeIndex]));
+        startActivityForResult(intent, PREVIEW_REQUEST);
     }
 
     private boolean isSyncMode() {

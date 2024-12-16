@@ -65,9 +65,10 @@
 
         <LinearLayout
             android:id="@+id/sv_note_edit"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="fill_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:elevation="1dp">
 
             <ImageView
                 android:layout_width="fill_parent"
@@ -76,36 +77,37 @@
 
             <ScrollView
                 android:layout_width="fill_parent"
-                android:layout_height="0dip"
-                android:layout_weight="1"
-                android:scrollbars="none"
-                android:overScrollMode="never"
+                android:layout_height="605dp"
                 android:layout_gravity="left|top"
-                android:fadingEdgeLength="0dip">
+                android:layout_weight="1"
+                android:fadingEdgeLength="0dip"
+                android:overScrollMode="never"
+                android:scrollbars="none">
 
                 <LinearLayout
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical">
 
-<!--                    <net.micode.notes.ui.NoteEditText-->
+                    <!--                    <net.micode.notes.ui.NoteEditText-->
                     <jp.wasabeef.richeditor.RichEditor
                         android:id="@+id/note_edit_view"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="left|top"
-                        android:background="@null"
                         android:autoLink="all"
+                        android:background="@null"
+                        android:gravity="left|top"
+                        android:lineSpacingMultiplier="1.2"
                         android:linksClickable="false"
                         android:minLines="12"
-                        android:textAppearance="@style/TextAppearancePrimaryItem"
-                        android:lineSpacingMultiplier="1.2" />
+                        android:textAppearance="@style/TextAppearancePrimaryItem" />
 
                     <LinearLayout
                         android:id="@+id/note_edit_list"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
                         android:layout_marginLeft="-10dip"
+                        android:orientation="vertical"
                         android:visibility="gone" />
                 </LinearLayout>
             </ScrollView>
@@ -244,7 +246,8 @@
         android:layout_height="wrap_content"
         android:background="@drawable/font_size_selector_bg"
         android:layout_gravity="bottom"
-        android:visibility="gone">
+        android:visibility="gone"
+        android:elevation="2dp">
 
         <FrameLayout
             android:id="@+id/ll_font_small"
@@ -406,7 +409,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:orientation="vertical"
-        android:padding="8dp">
+        android:layout_marginTop="10dp"
+        android:background="#FFFFFF"
+        android:padding="8dp"
+        android:elevation="2dp">
 
         <!-- 第一层按钮：图片和文字 -->
         <LinearLayout

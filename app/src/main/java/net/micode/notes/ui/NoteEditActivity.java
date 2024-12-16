@@ -510,6 +510,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
                                 | DateUtils.FORMAT_SHOW_YEAR)+"\n字符数："+mNoteLength);
             }
         });
+
         mNoteEditorPanel = findViewById(R.id.sv_note_edit);
         mNoteBgColorSelector = findViewById(R.id.note_bg_color_selector);
         for (int id : sBgSelectorBtnsMap.keySet()) {

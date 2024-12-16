@@ -81,6 +81,9 @@
     <string name="alert_loading">Loading...</string>
     <string name="alert_title_prettify">Prettify note</string>
     <string name="alert_message_prettify">Are you sure to prettify the note? This will change the note content and may cause data loss.</string>
+    <string name="alert_message_crypt">Please nput the password</string>
+    <string name="alert_encrypt">Encrypt</string>
+    <string name="alert_decrypt">Decrypt</string>
     <string name="alert_confirm">Yes</string>
     <string name="alert_cancel">Cancel</string>
     <string name="format_move_notes_to_folder">Have moved selected %1$d notes to %2$s folder</string>
@@ -90,8 +93,10 @@
     <string name="error_note_not_exist">The note is not exist</string>
     <string name="error_note_empty_for_clock">Sorry, can not set clock on empty note</string>
     <string name="error_note_empty_for_send_to_desktop">Sorry, can not send and empty note to home</string>
-    <string name="error_note_empty_for_prettify">Sorry, can not prettify an empty note</string>
+    <string name="error_note_empty">Sorry, can not prettify an empty note</string>
+    <string name="error_crypt_failed">Encrypt/Decrypt failed, please check the password</string>
     <string name="error_note_prettify_fail">Prettify failed due to unknown reason</string>
+    <string name="error_empty_key">Password can not be empty</string>
     <string name="success_sdcard_export">Export successful</string>
     <string name="failed_sdcard_export">Export fail</string>
     <string name="format_exported_file_location">Export text file (%1$s) to SD (%2$s) directory</string>

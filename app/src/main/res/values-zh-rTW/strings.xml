@@ -78,6 +78,9 @@
     <string name="alert_loading">加載中...</string>
     <string name="alert_title_prettify">文本润色</string>
     <string name="alert_message_prettify">确定要对所选的便籤进行文本润色吗？</string>
+    <string name="alert_message_crypt">请输入密码</string>
+    <string name="alert_encrypt">加密</string>
+    <string name="alert_decrypt">解密</string>
     <string name="alert_confirm">確認</string>
     <string name="alert_cancel">取消</string>
     <string name="error_sdcard_unmounted">SD卡被佔用，不能操作</string>
@@ -85,7 +88,9 @@
     <string name="error_note_not_exist">要查看的便籤不存在</string>
     <string name="error_note_empty_for_clock">不能爲空便籤設置鬧鐘提醒</string>
     <string name="error_note_empty_for_send_to_desktop">不能將空便籤發送到桌面</string>
-    <string name="error_note_empty_for_prettify">不能雅化空便籤</string>
+    <string name="error_note_empty">不能雅化空便籤</string>
+    <string name="error_empty_key">密码不能为空</string>
+    <string name="error_crypt_failed">加解密失败，请检查密码是否正确</string>
     <string name="success_sdcard_export">導出成功</string>
     <string name="failed_sdcard_export">導出失敗</string>
     <string name="format_exported_file_location">已將文本文件(%1$s)導出至SD(%2$s)目錄</string>

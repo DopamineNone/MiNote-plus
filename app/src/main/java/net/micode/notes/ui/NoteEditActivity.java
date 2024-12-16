@@ -163,6 +163,8 @@ public class NoteEditActivity extends Activity implements OnClickListener,
     private Pattern mPattern;
 
     private final int PHOTO_REQUEST = 1;//请求码
+
+    private final int PREVIEW_REQUEST = 2;
     private String mText;
     private int currentFontSizeIndex;
     private int[] fontSizes = {R.dimen.text_font_size_small, R.dimen.text_font_size_normal, R.dimen.text_font_size_medium, R.dimen.text_font_size_large, R.dimen.text_font_size_super};
@@ -310,10 +312,18 @@ public class NoteEditActivity extends Activity implements OnClickListener,
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("NoteEditActivity", "Image selected: Uri=" + data.getData());
-        Uri selectedImageUri = data.getData();
-
-        mNoteEditor.insertImage(selectedImageUri.toString(), "local_image", 320);
+        if (resultCode != RESULT_OK) return;
+        switch (requestCode) {
+            case PHOTO_REQUEST:
+                mNoteEditor.insertImage(data.getData().toString(), "local_image", 320);
+                break;
+            case PREVIEW_REQUEST:
+                mWorkingNote.setWorkingText(data.getStringExtra("note_text"));
+                mWorkingNote.saveNote();
+                break;
+            default:
+                Log.d(TAG, "Unknown request code" + requestCode);
+        }
 
     }
 
@@ -718,8 +728,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
 
     @Override
     public void onResultReceived(String result) {
-        this.mNoteEditor.setHtml(result);
-//        Log.d(TAG, "onResultReceived: " + result);
+        callPreview(result);
     }
 
     private void setReminder() {
@@ -781,7 +790,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
                 // Encrypt
                 try {
                     String encrypted = CryptUtils.encrypt(content, key);
-                    mNoteEditor.setHtml(encrypted);
+                    callPreview(encrypted);
                 } catch (Exception e) {
                     Log.e(TAG, "Encrypt error", e);
                     showToast(R.string.error_crypt_failed);
@@ -802,8 +811,8 @@ public class NoteEditActivity extends Activity implements OnClickListener,
                 }
                 // Encrypt
                 try {
-                    String encrypted = CryptUtils.decrypt(content, key);
-                    mNoteEditor.setHtml(encrypted);
+                    String decrypted = CryptUtils.decrypt(content, key);
+                    callPreview(decrypted);
                 } catch (Exception e) {
                     Log.e(TAG, "Encrypt error", e);
                     showToast(R.string.error_crypt_failed);
@@ -857,6 +866,14 @@ public class NoteEditActivity extends Activity implements OnClickListener,
             }
         }
         mWorkingNote.markDeleted(true);
+    }
+
+    private void callPreview(String content) {
+        Intent intent = new Intent(this, NotePreviewActivity.class);
+        intent.putExtra("note_text", content);
+        intent.putExtra("bg_color_res_id", mWorkingNote.getBgColorResId());
+        intent.putExtra("font_size", getResources().getDimensionPixelSize(fontSizes[currentFontSizeIndex]));
+        startActivityForResult(intent, PREVIEW_REQUEST);
     }
 
     private boolean isSyncMode() {

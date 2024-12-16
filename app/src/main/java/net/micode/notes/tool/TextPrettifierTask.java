@@ -117,7 +117,7 @@ public class TextPrettifierTask extends AsyncTask<Void, Void, Void> {
             this.dialog.dismiss();
         }
         if (!this.result_flag) {
-            Toast.makeText(this.dialog.getContext(), this.errorMessage, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this.context, this.errorMessage, Toast.LENGTH_SHORT).show();
         } else {
             listener.onResultReceived(result_text);
             Log.d(TAG, "Prettified text: " + result_text);

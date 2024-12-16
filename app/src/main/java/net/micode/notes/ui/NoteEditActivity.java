@@ -790,7 +790,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
                 // Encrypt
                 try {
                     String encrypted = CryptUtils.encrypt(content, key);
-                    callPreview(encrypted);
+                    callPreview("<!-- " + getString(R.string.alert_note_is_encrypted) + " -->\n" + encrypted);
                 } catch (Exception e) {
                     Log.e(TAG, "Encrypt error", e);
                     showToast(R.string.error_crypt_failed);
@@ -809,7 +809,8 @@ public class NoteEditActivity extends Activity implements OnClickListener,
                 if (isEmpytNote(content)) {
                     showToast(R.string.error_note_empty);
                 }
-                // Encrypt
+                content = content.split("\n")[1];
+                // Decrypt
                 try {
                     String decrypted = CryptUtils.decrypt(content, key);
                     callPreview(decrypted);

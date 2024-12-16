@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/list_background"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/sv_note_preview"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:elevation="1dp">
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="7dip"
+                android:background="@drawable/bg_color_btn_mask" />
+
+            <ScrollView
+                android:layout_width="fill_parent"
+                android:layout_height="605dp"
+                android:layout_gravity="left|top"
+                android:layout_weight="1"
+                android:fadingEdgeLength="0dip"
+                android:overScrollMode="never"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical">
+
+                    <!--                    <net.micode.notes.ui.NoteEditText-->
+                    <jp.wasabeef.richeditor.RichEditor
+                        android:id="@+id/note_preview_view"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:autoLink="all"
+                        android:background="@null"
+                        android:gravity="left|top"
+                        android:lineSpacingMultiplier="1.2"
+                        android:linksClickable="false"
+                        android:minLines="12"
+                        android:textAppearance="@style/TextAppearancePrimaryItem" />
+
+                </LinearLayout>
+            </ScrollView>
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="7dip"
+                android:background="@drawable/bg_color_btn_mask" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+        <!--底部选项栏-->
+        <LinearLayout
+            android:id="@+id/menu_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="bottom"
+            android:background="#ffffff"
+            android:gravity="center">
+
+            <!-- 图片按钮 -->
+            <Button
+                android:id="@+id/cancel_button"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:text="@string/alert_cancel"
+                android:textColor="@android:color/black"
+                android:textSize="20sp" />
+
+            <!-- 文字按钮 -->
+            <Button
+                android:id="@+id/confirm_button"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:text="@string/alert_confirm"
+                android:textColor="@android:color/black"
+                android:textSize="20sp" />
+        </LinearLayout>
+</FrameLayout>

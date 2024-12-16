@@ -75,6 +75,7 @@
     <string name="alert_message_delete_notes">确认要刪除所選的 %d 條便籤嗎?</string>
     <string name="alert_message_delete_note">确认要删除該條便籤嗎?</string>
     <string name="alert_message_delete_folder">確認刪除檔夾及所包含的便簽嗎？</string>
+    <string name="alert_old_font_size_adaption_feat_banned">该功能已被禁用，请使用最新版本的"编辑字体"</string>
     <string name="alert_loading">加載中...</string>
     <string name="alert_title_prettify">文本润色</string>
     <string name="alert_message_prettify">确定要对所选的便籤进行文本润色吗？</string>

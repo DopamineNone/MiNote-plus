@@ -591,16 +591,17 @@ public class NoteEditActivity extends Activity implements OnClickListener,
             mWorkingNote.setBgColorId(sBgSelectorBtnsMap.get(id));
             mNoteBgColorSelector.setVisibility(View.GONE);
         } else if (sFontSizeBtnsMap.containsKey(id)) {
-            findViewById(sFontSelectorSelectionMap.get(mFontSizeId)).setVisibility(View.GONE);
-            mFontSizeId = sFontSizeBtnsMap.get(id);
-            mSharedPrefs.edit().putInt(PREFERENCE_FONT_SIZE, mFontSizeId).commit();
-            findViewById(sFontSelectorSelectionMap.get(mFontSizeId)).setVisibility(View.VISIBLE);
-            if (mWorkingNote.getCheckListMode() == TextNote.MODE_CHECK_LIST) {
-                getWorkingText();
-                switchToListMode(mWorkingNote.getContent());
-            } else {
-                mNoteEditor.setEditorFontSize(mFontSizeId);
-            }
+            showToast(R.string.alert_old_font_size_adaption_feat_banned);
+//            findViewById(sFontSelectorSelectionMap.get(mFontSizeId)).setVisibility(View.GONE);
+//            mFontSizeId = sFontSizeBtnsMap.get(id);
+//            mSharedPrefs.edit().putInt(PREFERENCE_FONT_SIZE, mFontSizeId).commit();
+//            findViewById(sFontSelectorSelectionMap.get(mFontSizeId)).setVisibility(View.VISIBLE);
+//            if (mWorkingNote.getCheckListMode() == TextNote.MODE_CHECK_LIST) {
+//                getWorkingText();
+//                switchToListMode(mWorkingNote.getContent());
+//            } else {
+//                mNoteEditor.setEditorFontSize(mFontSizeId);
+//            }
             mFontSizeSelector.setVisibility(View.GONE);
             mBottomMenu.setVisibility(View.VISIBLE);
         }
@@ -1082,7 +1083,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
         try {
             PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_META_DATA);
             Bundle bundle = info.applicationInfo.metaData;
-            return bundle.getString("SYSTEM_ROLE_PROMPT");
+            return bundle.getString("DASHSCOPE_PROMPT");
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }

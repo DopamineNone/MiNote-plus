@@ -82,6 +82,7 @@
     <string name="alert_title_prettify">Prettify note</string>
     <string name="alert_message_prettify">Are you sure to prettify the note? This will change the note content and may cause data loss.</string>
     <string name="alert_message_crypt">Please nput the password</string>
+    <string name="alert_old_font_size_adaption_feat_banned">Sorry, this feature is banned in this version. Use \"Edit Font\" instead."</string>
     <string name="alert_encrypt">Encrypt</string>
     <string name="alert_decrypt">Decrypt</string>
     <string name="alert_confirm">Apply</string>

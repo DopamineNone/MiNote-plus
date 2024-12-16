@@ -350,6 +350,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
             Log.d(TAG, "加载时的内容: " + mWorkingNote.getContent());
             String noteContent = mWorkingNote.getContent();
             mNoteEditor.setHtml(noteContent);
+            mNoteEditor.setInputEnabled(!isNoteEncrypted(noteContent));
             int mNoteLength;
             if(noteContent != null)
             {
@@ -1161,6 +1162,11 @@ public class NoteEditActivity extends Activity implements OnClickListener,
 
     private boolean isEmpytNote(String content) {
         return content == null || content.trim().length() == 0 || Pattern.compile("^(<br>)*$").matcher(content).matches();
+    }
+
+    private boolean isNoteEncrypted(String content) {
+        content = content.split("\n")[0];
+        return content.startsWith("<!-- " + getString(R.string.alert_note_is_encrypted) + " -->");
     }
 
     private String makeShortcutIconTitle(String content) {

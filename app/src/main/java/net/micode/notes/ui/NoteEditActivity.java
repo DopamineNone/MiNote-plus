@@ -711,7 +711,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
         // Check if the note is empty
         getWorkingText();
         String content = mWorkingNote.getContent();
-        if (content == null || content.trim().length() == 0) {
+        if (isEmpytNote(content)) {
             showToast(R.string.error_note_empty_for_prettify);
             return;
         }
@@ -1060,6 +1060,10 @@ public class NoteEditActivity extends Activity implements OnClickListener,
             Log.e(TAG, "Send to desktop error");
             showToast(R.string.error_note_empty_for_send_to_desktop);
         }
+    }
+
+    private boolean isEmpytNote(String content) {
+        return content == null || content.trim().length() == 0 || Pattern.compile("^(<br>)*$").matcher(content).matches();
     }
 
     private String makeShortcutIconTitle(String content) {

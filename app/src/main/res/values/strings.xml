@@ -84,7 +84,7 @@
     <string name="alert_message_crypt">Please nput the password</string>
     <string name="alert_encrypt">Encrypt</string>
     <string name="alert_decrypt">Decrypt</string>
-    <string name="alert_confirm">Yes</string>
+    <string name="alert_confirm">Apply</string>
     <string name="alert_cancel">Cancel</string>
     <string name="format_move_notes_to_folder">Have moved selected %1$d notes to %2$s folder</string>
     <!-- Error information -->

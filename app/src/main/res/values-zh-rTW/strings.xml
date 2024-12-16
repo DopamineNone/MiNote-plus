@@ -67,6 +67,7 @@
     <string name="menu_remove_remind">刪除提醒</string>
     <string name="menu_title_select_folder">選擇文件夾</string>
     <string name="menu_move_parent_folder">上一級文件夾</string>
+    <string name="menu_crypt_note">加解密便籤</string>
     <string name="insert_image">插入圖片</string>
     <string name="edit_font">編輯字型</string>
     <string name="info_note_enter_desktop">已添加到桌面</string>

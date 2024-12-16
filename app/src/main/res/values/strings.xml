@@ -70,6 +70,7 @@
     <string name="menu_remove_remind">Delete reminder</string>
     <string name="menu_title_select_folder">Select folder</string>
     <string name="menu_move_parent_folder">Parent folder</string>
+    <string name="menu_crypt_note">Encrypt | Decrypt</string>
     <string name="insert_image">Insert image</string>
     <string name="edit_font">Edit font</string>
     <string name="info_note_enter_desktop">Note added to home</string>

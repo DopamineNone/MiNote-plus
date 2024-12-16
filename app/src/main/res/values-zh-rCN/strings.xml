@@ -20,6 +20,7 @@
     <string name="app_name">便签</string>
     <string name="app_widget2x2">便签2x2</string>
     <string name="app_widget4x4">便签4x4</string>
+    <string name="preview_title">便签预览</string>
     <string name="widget_havenot_content">没有关联内容，点击新建便签。</string>
     <string name="widget_under_visit_mode">访客模式下，便签内容不可见</string>
     <string name="notelist_string_info">...</string>

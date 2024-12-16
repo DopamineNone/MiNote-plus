@@ -91,6 +91,14 @@
                 android:resource="@xml/searchable" />
         </activity>
 
+        <activity
+            android:name=".ui.NotePreviewActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="singleTop"
+            android:label="@string/preview_title"
+            android:theme="@style/NoteTheme"
+            android:exported="true"/>
+
         <provider
             android:name="net.micode.notes.data.NotesProvider"
             android:authorities="micode_notes"

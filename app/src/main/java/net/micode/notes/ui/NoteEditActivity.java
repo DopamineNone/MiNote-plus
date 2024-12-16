@@ -47,6 +47,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
+import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -61,6 +62,7 @@ import net.micode.notes.data.Notes;
 import net.micode.notes.data.Notes.TextNote;
 import net.micode.notes.model.WorkingNote;
 import net.micode.notes.model.WorkingNote.NoteSettingChangedListener;
+import net.micode.notes.tool.CryptUtils;
 import net.micode.notes.tool.DataUtils;
 import net.micode.notes.tool.ResourceParser;
 import net.micode.notes.tool.ResourceParser.TextAppearanceResources;
@@ -693,6 +695,8 @@ public class NoteEditActivity extends Activity implements OnClickListener,
             case R.id.menu_prettify_note:
                 doPrettifyNote();
                 break;
+            case R.id.menu_crypt_note:
+                doCryptNote();
             default:
                 break;
         }
@@ -720,7 +724,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
         getWorkingText();
         String content = mWorkingNote.getContent();
         if (isEmpytNote(content)) {
-            showToast(R.string.error_note_empty_for_prettify);
+            showToast(R.string.error_note_empty);
             return;
         }
 
@@ -740,6 +744,60 @@ public class NoteEditActivity extends Activity implements OnClickListener,
         });
 
         builder.setNegativeButton(R.string.alert_cancel, null);
+        builder.show();
+    }
+
+    private void doCryptNote() {
+        // Pop a alert dialog to confirm the action
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.menu_crypt_note));
+        final AutoCompleteTextView input = new AutoCompleteTextView(this);
+        builder.setView(input);
+        builder.setMessage(R.string.alert_message_crypt);
+        builder.setPositiveButton(R.string.alert_encrypt, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                String key = input.getText().toString();
+                if (key.length() == 0) {
+                    showToast(R.string.error_empty_key);
+                }
+                getWorkingText();
+                String content = mWorkingNote.getContent();
+                if (isEmpytNote(content)) {
+                    showToast(R.string.error_note_empty);
+                }
+                // Encrypt
+                try {
+                    String encrypted = CryptUtils.encrypt(content, key);
+                    mNoteEditor.setHtml(encrypted);
+                } catch (Exception e) {
+                    Log.e(TAG, "Encrypt error", e);
+                    showToast(R.string.error_crypt_failed);
+                    return;
+                }
+            }
+        });
+        builder.setNegativeButton(R.string.alert_decrypt, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                String key = input.getText().toString();
+                if (key.length() == 0) {
+                    showToast(R.string.error_empty_key);
+                }
+                getWorkingText();
+                String content = mWorkingNote.getContent();
+                if (isEmpytNote(content)) {
+                    showToast(R.string.error_note_empty);
+                }
+                // Encrypt
+                try {
+                    String encrypted = CryptUtils.decrypt(content, key);
+                    mNoteEditor.setHtml(encrypted);
+                } catch (Exception e) {
+                    Log.e(TAG, "Encrypt error", e);
+                    showToast(R.string.error_crypt_failed);
+                    return;
+                }
+            }
+        });
         builder.show();
     }
 

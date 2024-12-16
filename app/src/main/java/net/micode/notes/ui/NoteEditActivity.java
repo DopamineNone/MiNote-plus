@@ -135,6 +135,8 @@ public class NoteEditActivity extends Activity implements OnClickListener,
 
     private View mFontSizeSelector;
 
+    private View mBottomMenu;
+
 //    private EditText mNoteEditor;
     private RichEditor mNoteEditor;
 
@@ -466,6 +468,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
         if (mFontSizeSelector.getVisibility() == View.VISIBLE
                 && !inRangeOfView(mFontSizeSelector, ev)) {
             mFontSizeSelector.setVisibility(View.GONE);
+            mBottomMenu.setVisibility(View.VISIBLE);
             return true;
         }
         return super.dispatchTouchEvent(ev);
@@ -507,6 +510,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
                                 | DateUtils.FORMAT_SHOW_YEAR)+"\n字符数："+mNoteLength);
             }
         });
+
         mNoteEditorPanel = findViewById(R.id.sv_note_edit);
         mNoteBgColorSelector = findViewById(R.id.note_bg_color_selector);
         for (int id : sBgSelectorBtnsMap.keySet()) {
@@ -519,6 +523,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
             View view = findViewById(id);
             view.setOnClickListener(this);
         };
+        mBottomMenu = findViewById(R.id.bottom_menu);
         mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         mFontSizeId = mSharedPrefs.getInt(PREFERENCE_FONT_SIZE, ResourceParser.BG_DEFAULT_FONT_SIZE);
         /**
@@ -583,6 +588,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
                 mNoteEditor.setEditorFontSize(mFontSizeId);
             }
             mFontSizeSelector.setVisibility(View.GONE);
+            mBottomMenu.setVisibility(View.VISIBLE);
         }
         mNoteEditor.setBackgroundResource(mWorkingNote.getBgColorResId());
     }
@@ -603,6 +609,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
             return true;
         } else if (mFontSizeSelector.getVisibility() == View.VISIBLE) {
             mFontSizeSelector.setVisibility(View.GONE);
+            mBottomMenu.setVisibility(View.VISIBLE);
             return true;
         }
         return false;
@@ -664,6 +671,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
             case R.id.menu_font_size:
                 mFontSizeSelector.setVisibility(View.VISIBLE);
                 findViewById(sFontSelectorSelectionMap.get(mFontSizeId)).setVisibility(View.VISIBLE);
+                mBottomMenu.setVisibility(View.GONE);
                 break;
             case R.id.menu_list_mode:
                 mWorkingNote.setCheckListMode(mWorkingNote.getCheckListMode() == 0 ?
@@ -711,7 +719,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
         // Check if the note is empty
         getWorkingText();
         String content = mWorkingNote.getContent();
-        if (content == null || content.trim().length() == 0) {
+        if (isEmpytNote(content)) {
             showToast(R.string.error_note_empty_for_prettify);
             return;
         }
@@ -1060,6 +1068,10 @@ public class NoteEditActivity extends Activity implements OnClickListener,
             Log.e(TAG, "Send to desktop error");
             showToast(R.string.error_note_empty_for_send_to_desktop);
         }
+    }
+
+    private boolean isEmpytNote(String content) {
+        return content == null || content.trim().length() == 0 || Pattern.compile("^(<br>)*$").matcher(content).matches();
     }
 
     private String makeShortcutIconTitle(String content) {

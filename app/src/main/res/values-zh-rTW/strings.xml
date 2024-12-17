@@ -86,6 +86,8 @@
     <string name="alert_decrypt">解密</string>
     <string name="alert_confirm">应用</string>
     <string name="alert_cancel">取消</string>
+    <string name="alert_cipher_cant_be_encrypted">密文无法加密</string>
+    <string name="alert_plain_cant_be_decrypted">明文无法解密</string>
     <string name="error_sdcard_unmounted">SD卡被佔用，不能操作</string>
     <string name="error_sdcard_export">導出TXT時發生錯誤，請檢查SD卡</string>
     <string name="error_note_not_exist">要查看的便籤不存在</string>

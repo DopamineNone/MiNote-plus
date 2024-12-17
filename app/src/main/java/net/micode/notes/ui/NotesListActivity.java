@@ -814,18 +814,9 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
                 createNewNote();
                 break;
             }
-            case R.id.menu_search:
-                onSearchRequested();
-                break;
             default:
                 break;
         }
-        return true;
-    }
-
-    @Override
-    public boolean onSearchRequested() {
-        startSearch(null, false, null /* appData */, false);
         return true;
     }
 

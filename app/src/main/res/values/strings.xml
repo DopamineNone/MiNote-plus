@@ -138,6 +138,7 @@
     <string name="preferences_bg_random_appear_title">New note background color random</string>
 
     <string name="button_delete">Delete</string>
+    <string name="button_ok">OK</string>
     <string name="call_record_folder_name">Call notes</string>
     <string name="hint_foler_name">Input name</string>
 

@@ -23,12 +23,14 @@ import android.appwidget.AppWidgetManager;
 import android.content.ActivityNotFoundException;
 import android.content.AsyncQueryHandler;
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -54,6 +56,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -113,6 +116,10 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
     private int mDispatchY;
 
     private TextView mTitleBar;
+
+    private AutoCompleteTextView mSearchView;
+
+    private Button mSearchButton;
 
     private long mCurrentFolderId;
 
@@ -230,6 +237,15 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
         mTitleBar = (TextView) findViewById(R.id.tv_title_bar);
         mState = ListEditState.NOTE_LIST;
         mModeCallBack = new ModeCallback();
+
+        // Set up search view
+        initSearchView();
+    }
+
+    private void initSearchView() {
+        mSearchView = (AutoCompleteTextView) findViewById(R.id.search_input);
+        mSearchButton = (Button) findViewById(R.id.btn_search);
+        mSearchButton.setOnClickListener(this);
     }
 
     private class ModeCallback implements ListView.MultiChoiceModeListener, OnMenuItemClickListener {
@@ -463,6 +479,23 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
         builder.show();
     }
 
+    private void startSearch() {
+        // get query string
+        String query = mSearchView.getText().toString();
+        // if query is empty, show all notes
+        if (TextUtils.isEmpty(query)) {
+            startAsyncNotesListQuery();
+            return;
+        }
+        // build search uri
+        Uri uri = Uri.parse("content://" + Notes.AUTHORITY + "/search").buildUpon()
+                .appendQueryParameter("pattern", query).build();
+        // start search
+        Cursor cursor = mContentResolver.query(uri, null, null, null, null);
+        Log.d(TAG, "Search result count: " + cursor.getCount());
+        mNotesListAdapter.changeCursor(cursor);
+    }
+
     private void createNewNote() {
         Intent intent = new Intent(this, NoteEditActivity.class);
         intent.setAction(Intent.ACTION_INSERT_OR_EDIT);
@@ -566,6 +599,9 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
         switch (v.getId()) {
             case R.id.btn_new_note:
                 createNewNote();
+                break;
+            case R.id.btn_search:
+                startSearch();
                 break;
             default:
                 break;
@@ -814,18 +850,9 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
                 createNewNote();
                 break;
             }
-            case R.id.menu_search:
-                onSearchRequested();
-                break;
             default:
                 break;
         }
-        return true;
-    }
-
-    @Override
-    public boolean onSearchRequested() {
-        startSearch(null, false, null /* appData */, false);
         return true;
     }
 

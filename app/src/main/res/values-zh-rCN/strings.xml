@@ -132,6 +132,7 @@
     <string name="preferences_toast_success_set_accout">同步帐号已设置为%1$s</string>
     <string name="preferences_bg_random_appear_title">新建便签背景颜色随机</string>
     <string name="button_delete">删除</string>
+    <string name="button_ok">确定</string>
     <string name="call_record_folder_name">通话便签</string>
     <string name="hint_foler_name">请输入名称</string>
     <string name="search_label">正在搜索便签</string>

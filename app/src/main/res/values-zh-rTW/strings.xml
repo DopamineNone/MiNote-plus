@@ -132,6 +132,7 @@
     <string name="preferences_bg_random_appear_title">新建便籤背景顏色隨機</string>
 
     <string name="button_delete">刪除</string>
+    <string name="button_ok">確認</string>
     <string name="call_record_folder_name">通話便籤</string>
     <string name="hint_foler_name">請輸入名稱</string>
 

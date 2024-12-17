@@ -204,6 +204,8 @@ public class Notes {
          */
         public static final String CONTENT = "content";
 
+        public static final String IS_ENCRYPTED = "is_encrypted";
+
 
         /**
          * Generic data column, the meaning is {@link #MIMETYPE} specific, used for

@@ -71,6 +71,7 @@ public class NotesDatabaseHelper extends SQLiteOpenHelper {
             NoteColumns.CREATED_DATE + " INTEGER NOT NULL DEFAULT (strftime('%s','now') * 1000)," +
             NoteColumns.MODIFIED_DATE + " INTEGER NOT NULL DEFAULT (strftime('%s','now') * 1000)," +
             DataColumns.CONTENT + " TEXT NOT NULL DEFAULT ''," +
+            DataColumns.IS_ENCRYPTED + " INTEGER NOT NULL DEFAULT 0," +
             DataColumns.DATA1 + " INTEGER," +
             DataColumns.DATA2 + " INTEGER," +
             DataColumns.DATA3 + " TEXT NOT NULL DEFAULT ''," +

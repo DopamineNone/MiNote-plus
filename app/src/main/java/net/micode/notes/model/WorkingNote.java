@@ -20,6 +20,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
+import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -41,6 +42,8 @@ public class WorkingNote {
     private String mContent;
     // Note mode
     private int mMode;
+
+    private int mEncryptedMode; // 0: not encrypted, 1: encrypted
 
     private long mAlertDate;
 
@@ -65,6 +68,7 @@ public class WorkingNote {
     public static final String[] DATA_PROJECTION = new String[] {
             DataColumns.ID,
             DataColumns.CONTENT,
+            DataColumns.IS_ENCRYPTED,
             DataColumns.MIME_TYPE,
             DataColumns.DATA1,
             DataColumns.DATA2,
@@ -85,9 +89,11 @@ public class WorkingNote {
 
     private static final int DATA_CONTENT_COLUMN = 1;
 
-    private static final int DATA_MIME_TYPE_COLUMN = 2;
+    private static final int DATA_IS_ENCRYPTED_COLUMN = 2;
 
-    private static final int DATA_MODE_COLUMN = 3;
+    private static final int DATA_MIME_TYPE_COLUMN = 3;
+
+    private static final int DATA_MODE_COLUMN = 4;
 
     private static final int NOTE_PARENT_ID_COLUMN = 0;
 
@@ -159,6 +165,7 @@ public class WorkingNote {
                     if (DataConstants.NOTE.equals(type)) {
                         mContent = cursor.getString(DATA_CONTENT_COLUMN);
                         mMode = cursor.getInt(DATA_MODE_COLUMN);
+                        mEncryptedMode = cursor.getInt(DATA_IS_ENCRYPTED_COLUMN);
                         mNote.setTextDataId(cursor.getLong(DATA_ID_COLUMN));
                     } else if (DataConstants.CALL_NOTE.equals(type)) {
                         mNote.setCallDataId(cursor.getLong(DATA_ID_COLUMN));
@@ -281,10 +288,15 @@ public class WorkingNote {
         }
     }
 
+    public void toggleEncryptedMode() {
+        mEncryptedMode = (mEncryptedMode == 0 ? 1 : 0);
+    }
+
     public void setWorkingText(String text) {
         if (!TextUtils.equals(mContent, text)) {
             mContent = text;
             mNote.setTextData(DataColumns.CONTENT, mContent);
+            mNote.setTextData(DataColumns.IS_ENCRYPTED, String.valueOf(mEncryptedMode));
         }
     }
 
@@ -340,6 +352,10 @@ public class WorkingNote {
 
     public int getWidgetType() {
         return mWidgetType;
+    }
+
+    public boolean isEncrypted() {
+        return (mEncryptedMode == 1 ? true : false);
     }
 
     public interface NoteSettingChangedListener {

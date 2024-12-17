@@ -34,7 +34,7 @@
             android:layout_height="70dp"
             android:layout_weight="4"
             android:textColor="#FFFFFFFF"
-            android:textColorHint="#FFFFFFFF"
+            android:textColorHint="#FFCCCCCC"
             android:gravity="bottom"
             android:hint="@string/search_hint" />
 

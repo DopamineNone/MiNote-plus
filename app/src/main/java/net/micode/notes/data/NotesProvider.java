@@ -65,13 +65,25 @@ public class NotesProvider extends ContentProvider {
      * x'0A' represents the '\n' character in sqlite. For title and content in the search result,
      * we will trim '\n' and white space in order to show more information.
      */
-    private static final String NOTES_SEARCH_PROJECTION = NoteColumns.ID + ","
-        + NoteColumns.ID + " AS " + SearchManager.SUGGEST_COLUMN_INTENT_EXTRA_DATA + ","
-        + "TRIM(REPLACE(" + NoteColumns.SNIPPET + ", x'0A','')) AS " + SearchManager.SUGGEST_COLUMN_TEXT_1 + ","
-        + "TRIM(REPLACE(" + NoteColumns.SNIPPET + ", x'0A','')) AS " + SearchManager.SUGGEST_COLUMN_TEXT_2 + ","
-        + R.drawable.search_result + " AS " + SearchManager.SUGGEST_COLUMN_ICON_1 + ","
-        + "'" + Intent.ACTION_VIEW + "' AS " + SearchManager.SUGGEST_COLUMN_INTENT_ACTION + ","
-        + "'" + Notes.TextNote.CONTENT_TYPE + "' AS " + SearchManager.SUGGEST_COLUMN_INTENT_DATA;
+//    private static final String NOTES_SEARCH_PROJECTION = NoteColumns.ID + ","
+//        + NoteColumns.ID + " AS " + SearchManager.SUGGEST_COLUMN_INTENT_EXTRA_DATA + ","
+//        + "TRIM(REPLACE(" + NoteColumns.SNIPPET + ", x'0A','')) AS " + SearchManager.SUGGEST_COLUMN_TEXT_1 + ","
+//        + "TRIM(REPLACE(" + NoteColumns.SNIPPET + ", x'0A','')) AS " + SearchManager.SUGGEST_COLUMN_TEXT_2 + ","
+//        + R.drawable.search_result + " AS " + SearchManager.SUGGEST_COLUMN_ICON_1 + ","
+//        + "'" + Intent.ACTION_VIEW + "' AS " + SearchManager.SUGGEST_COLUMN_INTENT_ACTION + ","
+//        + "'" + Notes.TextNote.CONTENT_TYPE + "' AS " + SearchManager.SUGGEST_COLUMN_INTENT_DATA;
+    private static final String NOTES_SEARCH_PROJECTION =     NoteColumns.ID + ", " +
+            NoteColumns.ALERTED_DATE + ", " +
+            NoteColumns.BG_COLOR_ID + ", " +
+            NoteColumns.CREATED_DATE + ", " +
+            NoteColumns.HAS_ATTACHMENT + ", " +
+            NoteColumns.MODIFIED_DATE + ", " +
+            NoteColumns.NOTES_COUNT + ", " +
+            NoteColumns.PARENT_ID + ", " +
+            NoteColumns.SNIPPET + ", " +
+            NoteColumns.TYPE + ", " +
+            NoteColumns.WIDGET_ID + ", " +
+            NoteColumns.WIDGET_TYPE;
 
     private static String NOTES_SNIPPET_SEARCH_QUERY = "SELECT " + NOTES_SEARCH_PROJECTION
         + " FROM " + TABLE.NOTE

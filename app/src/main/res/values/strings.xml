@@ -89,6 +89,8 @@
     <string name="alert_decrypt">Decrypt</string>
     <string name="alert_confirm">Apply</string>
     <string name="alert_cancel">Cancel</string>
+    <string name="alert_cipher_cant_be_encrypted">Ciphers can not be encrypted</string>
+    <string name="alert_plain_cant_be_decrypted">Plains can not be decrypted</string>
     <string name="format_move_notes_to_folder">Have moved selected %1$d notes to %2$s folder</string>
     <!-- Error information -->
     <string name="error_sdcard_unmounted">SD card busy, not available now</string>

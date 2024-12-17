@@ -327,7 +327,6 @@ public class NoteEditActivity extends Activity implements OnClickListener,
 
     }
 
-    // 从 Uri 获取文件路径
 
     public void initRichEditor()
     {
@@ -782,11 +781,17 @@ public class NoteEditActivity extends Activity implements OnClickListener,
                 String key = input.getText().toString();
                 if (key.length() == 0) {
                     showToast(R.string.error_empty_key);
+                    return;
                 }
                 getWorkingText();
                 String content = mWorkingNote.getContent();
                 if (isEmpytNote(content)) {
                     showToast(R.string.error_note_empty);
+                    return;
+                }
+                if (isNoteEncrypted(content)) {
+                    showToast(R.string.alert_cipher_cant_be_encrypted);
+                    return;
                 }
                 // Encrypt
                 try {
@@ -804,11 +809,17 @@ public class NoteEditActivity extends Activity implements OnClickListener,
                 String key = input.getText().toString();
                 if (key.length() == 0) {
                     showToast(R.string.error_empty_key);
+                    return;
                 }
                 getWorkingText();
                 String content = mWorkingNote.getContent();
                 if (isEmpytNote(content)) {
                     showToast(R.string.error_note_empty);
+                    return;
+                }
+                if (!isNoteEncrypted(content)) {
+                    showToast(R.string.alert_plain_cant_be_decrypted);
+                    return;
                 }
                 content = content.split("\n")[1];
                 // Decrypt

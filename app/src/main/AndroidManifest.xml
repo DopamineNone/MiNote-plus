@@ -35,9 +35,10 @@
         android:icon="@drawable/icon_app"
         android:label="@string/app_name" >
 
+        <!--To build the app, you need to get a dashcope API key-->
         <meta-data
             android:name="API_KEY"
-            android:value="sk-13d2efdc1ac244ac9367df2185bb2cd7" />
+            android:value="xxx" />
         <meta-data
             android:name="ENDPOINT_URL"
             android:value="https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions" />

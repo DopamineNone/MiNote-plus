@@ -140,7 +140,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
 
     private View mBottomMenu;
 
-//    private EditText mNoteEditor;
+    // private EditText mNoteEditor;
     private RichEditor mNoteEditor;
 
     private View mNoteEditorPanel;
@@ -164,7 +164,9 @@ public class NoteEditActivity extends Activity implements OnClickListener,
 
     private final int PHOTO_REQUEST = 1;//请求码
 
-    private final int PREVIEW_REQUEST = 2;
+    private final int PREVIEW_PRETTIFY_RESULT_REQUEST = 2;
+
+    private final int PREVIEW_CRYPT_RESULT_REQUEST = 3;
     private String mText;
     private int currentFontSizeIndex;
     private int[] fontSizes = {R.dimen.text_font_size_small, R.dimen.text_font_size_normal, R.dimen.text_font_size_medium, R.dimen.text_font_size_large, R.dimen.text_font_size_super};
@@ -317,7 +319,12 @@ public class NoteEditActivity extends Activity implements OnClickListener,
             case PHOTO_REQUEST:
                 mNoteEditor.insertImage(data.getData().toString(), "local_image", 320);
                 break;
-            case PREVIEW_REQUEST:
+            case PREVIEW_PRETTIFY_RESULT_REQUEST:
+                mWorkingNote.setWorkingText(data.getStringExtra("note_text"));
+                mWorkingNote.saveNote();
+                break;
+            case PREVIEW_CRYPT_RESULT_REQUEST:
+                mWorkingNote.toggleEncryptedMode();
                 mWorkingNote.setWorkingText(data.getStringExtra("note_text"));
                 mWorkingNote.saveNote();
                 break;
@@ -349,7 +356,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
             Log.d(TAG, "加载时的内容: " + mWorkingNote.getContent());
             String noteContent = mWorkingNote.getContent();
             mNoteEditor.setHtml(noteContent);
-            mNoteEditor.setInputEnabled(!isNoteEncrypted(noteContent));
+            mNoteEditor.setInputEnabled(!mWorkingNote.isEncrypted());
             int mNoteLength;
             if(noteContent != null)
             {
@@ -728,7 +735,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
 
     @Override
     public void onResultReceived(String result) {
-        callPreview(result);
+        callPreview(result, PREVIEW_PRETTIFY_RESULT_REQUEST);
     }
 
     private void setReminder() {
@@ -789,14 +796,14 @@ public class NoteEditActivity extends Activity implements OnClickListener,
                     showToast(R.string.error_note_empty);
                     return;
                 }
-                if (isNoteEncrypted(content)) {
+                if (mWorkingNote.isEncrypted()) {
                     showToast(R.string.alert_cipher_cant_be_encrypted);
                     return;
                 }
                 // Encrypt
                 try {
                     String encrypted = CryptUtils.encrypt(content, key);
-                    callPreview("<!-- " + getString(R.string.alert_note_is_encrypted) + " -->\n" + encrypted);
+                    callPreview("<!-- " + getString(R.string.alert_note_is_encrypted) + " -->\n" + encrypted, PREVIEW_CRYPT_RESULT_REQUEST);
                 } catch (Exception e) {
                     Log.e(TAG, "Encrypt error", e);
                     showToast(R.string.error_crypt_failed);
@@ -817,7 +824,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
                     showToast(R.string.error_note_empty);
                     return;
                 }
-                if (!isNoteEncrypted(content)) {
+                if (!mWorkingNote.isEncrypted()) {
                     showToast(R.string.alert_plain_cant_be_decrypted);
                     return;
                 }
@@ -825,7 +832,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
                 // Decrypt
                 try {
                     String decrypted = CryptUtils.decrypt(content, key);
-                    callPreview(decrypted);
+                    callPreview(decrypted, PREVIEW_CRYPT_RESULT_REQUEST);
                 } catch (Exception e) {
                     Log.e(TAG, "Encrypt error", e);
                     showToast(R.string.error_crypt_failed);
@@ -881,12 +888,12 @@ public class NoteEditActivity extends Activity implements OnClickListener,
         mWorkingNote.markDeleted(true);
     }
 
-    private void callPreview(String content) {
+    private void callPreview(String content, int requestCode) {
         Intent intent = new Intent(this, NotePreviewActivity.class);
         intent.putExtra("note_text", content);
         intent.putExtra("bg_color_res_id", mWorkingNote.getBgColorResId());
         intent.putExtra("font_size", getResources().getDimensionPixelSize(fontSizes[currentFontSizeIndex]));
-        startActivityForResult(intent, PREVIEW_REQUEST);
+        startActivityForResult(intent, requestCode);
     }
 
     private boolean isSyncMode() {
@@ -1173,11 +1180,6 @@ public class NoteEditActivity extends Activity implements OnClickListener,
 
     private boolean isEmpytNote(String content) {
         return content == null || content.trim().length() == 0 || Pattern.compile("^(<br>)*$").matcher(content).matches();
-    }
-
-    private boolean isNoteEncrypted(String content) {
-        content = content.split("\n")[0];
-        return content.startsWith("<!-- " + getString(R.string.alert_note_is_encrypted) + " -->");
     }
 
     private String makeShortcutIconTitle(String content) {

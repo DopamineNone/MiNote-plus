@@ -76,6 +76,10 @@ public class Note {
         mNoteDiffValues.put(NoteColumns.MODIFIED_DATE, System.currentTimeMillis());
     }
 
+    public void setEncryptedMode(int mode) {
+
+    }
+
     public void setTextData(String key, String value) {
         mNoteData.setTextData(key, value);
     }

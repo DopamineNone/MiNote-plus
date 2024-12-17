@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.appwidget.AppWidgetManager;
+import android.content.ActivityNotFoundException;
 import android.content.AsyncQueryHandler;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -466,7 +467,11 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
         Intent intent = new Intent(this, NoteEditActivity.class);
         intent.setAction(Intent.ACTION_INSERT_OR_EDIT);
         intent.putExtra(Notes.INTENT_EXTRA_FOLDER_ID, mCurrentFolderId);
-        this.startActivityForResult(intent, REQUEST_CODE_NEW_NODE);
+        try {
+            this.startActivityForResult(intent, REQUEST_CODE_NEW_NODE);
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "Cannot start NoteEditActivity", e);
+        }
     }
 
     private void batchDelete() {

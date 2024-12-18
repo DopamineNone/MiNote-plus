@@ -65,6 +65,7 @@ public class NotePreviewActivity extends Activity implements View.OnClickListene
                 resultIntent.putExtra("note_text", mNoteText);
                 setResult(RESULT_OK, resultIntent);
             default:
+                // Once button is click then finish()
                 finish();
         }
     }

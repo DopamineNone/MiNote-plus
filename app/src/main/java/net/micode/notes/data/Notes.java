@@ -204,6 +204,10 @@ public class Notes {
          */
         public static final String CONTENT = "content";
 
+        /**
+         * Data's encrypted flag
+         * <P> Type: INTEGER (boolean) </P>
+         */
         public static final String IS_ENCRYPTED = "is_encrypted";
 
 

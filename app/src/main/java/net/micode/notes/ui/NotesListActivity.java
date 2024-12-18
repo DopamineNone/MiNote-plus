@@ -492,7 +492,6 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
                 .appendQueryParameter("pattern", query).build();
         // start search
         Cursor cursor = mContentResolver.query(uri, null, null, null, null);
-        Log.d(TAG, "Search result count: " + cursor.getCount());
         mNotesListAdapter.changeCursor(cursor);
     }
 
